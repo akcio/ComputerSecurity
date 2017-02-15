@@ -1,8 +1,13 @@
-#include <QCoreApplication>
+#include <iostream>
+#include <passwordgenerator.h>
+
+using namespace std;
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
-
-    return a.exec();
+    PasswordGenerator pg;
+    int a;
+    cin >> a;
+    cout << pg.GeneratePassword(a).toStdString() << endl;
+    return 0;
 }
