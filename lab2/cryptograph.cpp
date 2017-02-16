@@ -9,7 +9,7 @@ Cryptograph::Cryptograph(unsigned int randomSeed)
     srand(randomSeed);
 }
 
-QString Cryptograph::EncodeOneAlphabet(QString toEncode, unsigned int key)
+QString Cryptograph::EncodeOneAlphabet(QString toEncode, int key)
 {
     QString encoded = "";
     for (int i=0; i<toEncode.count(); i++)
@@ -22,7 +22,7 @@ QString Cryptograph::EncodeOneAlphabet(QString toEncode, unsigned int key)
     return encoded;
 }
 
-QString Cryptograph::DecodeOneAlphabet(QString toDecode, unsigned int key)
+QString Cryptograph::DecodeOneAlphabet(QString toDecode, int key)
 {
     QString decoded = "";
     for (int i=0; i<toDecode.count(); i++)
@@ -40,10 +40,10 @@ QString Cryptograph::EncodeMultiAlpabet(QString toEncode, QString key)
     QString encoded = "";
     for (int i=0; i<toEncode.count(); i++)
     {
-        int newChar = ((toEncode.at(i).toLatin1()) + key.at(i % key.count()).toLatin1()) % 256;
+        ushort newChar = ((toEncode.at(i).unicode()) + key.at(i % key.count()).unicode());
         /*if (newChar == 0)
             newChar = 255;*/
-        encoded += (char)newChar;
+        encoded += (QChar)newChar;
     }
     return encoded;
 }
@@ -53,11 +53,11 @@ QString Cryptograph::DecodeMultiAlpabet(QString toDecode, QString key)
     QString decoded = "";
     for (int i=0; i<toDecode.count(); i++)
     {
-        int newChar = ((toDecode.at(i).toLatin1()) - key.at(i % key.count()).toLatin1()) % 256;
+        ushort newChar = ((toDecode.at(i).unicode()) - key.at(i % key.count()).unicode());
         /*if (newChar == 0)
             newChar = 255;
             */
-        decoded += (char)newChar;
+        decoded += (QChar)newChar;
     }
     return decoded;
 }
@@ -117,17 +117,19 @@ QString Cryptograph::LoadFromFileUnicoded(QString fileName)
     return fileText;
 }
 
-void SaveToFile(QString fileName, QString text)
+void Cryptograph::SaveToFile(QString fileName, QString text)
 {
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
             return;
     QTextStream out(&file);
+
     out << text << endl;
+
     file.close();
 }
 
-QString LoadFromFile(QString fileName)
+QString Cryptograph::LoadFromFile(QString fileName)
 {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))

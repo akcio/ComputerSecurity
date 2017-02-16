@@ -14,7 +14,7 @@ public:
     ~DataBaseWorker();
     unsigned short CheckFileAndHash(QString fileName, QByteArray hash);
     void AddToDataBase(QString fileName, QByteArray hash);
-    QList<QString> DataBaseWorker::GetAllData();
+    QList<QString> GetAllData();
 private:
     QSqlDatabase db;
 };
