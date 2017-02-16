@@ -31,7 +31,7 @@ bool Saver::Save(QString fileName, QList<QString> passwords)
     return true;
 }
 
-QList<QString> Saver::Load(QString fileName, unsigned int key)
+QList<QString> Saver::Load(QString fileName)
 {
     QFile file(fileName);
     QList<QString> decoded;
@@ -41,27 +41,39 @@ QList<QString> Saver::Load(QString fileName, unsigned int key)
     while (!in.atEnd())
     {
         QString toDecode = in.readLine();
-        decoded.append(Decode(toDecode, key));
+        decoded.append(Decode(toDecode, GenerateKey()));
     }
     return decoded;
 }
 
 QString Saver::Encode(QString toEncode, unsigned int key)
 {
-    //ENCODING
-    QString encoded = toEncode;
+    QString encoded = "";
+    for (int i=0; i<toEncode.count(); i++)
+    {
+        int newChar = ((toEncode.at(i).toLatin1())+key) % 255;
+        if (newChar == 0)
+            newChar = 255;
+        encoded += (char)newChar;
+    }
     return encoded;
 }
 
 QString Saver::Decode(QString toDecode, unsigned int key)
 {
-    //DECODING
-    QString decoded = toDecode;
+    QString decoded = "";
+    for (int i=0; i<toDecode.count(); i++)
+    {
+        int newChar = (toDecode.at(i).toLatin1()-key) % 255;
+        if (newChar == 0)
+            newChar = 255;
+        decoded += (char)newChar;
+    }
     return decoded;
 }
 
 unsigned int Saver::GenerateKey()
 {
     //GENERATE KEY!
-    return 1;
+    return 3;
 }

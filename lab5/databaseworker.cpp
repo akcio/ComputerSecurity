@@ -6,8 +6,6 @@
 QSqlDatabase db;
 
 
-enum DatabaseAnswer { HAS_ROW, ROW_BROKEN, NO_ROW };
-
 DataBaseWorker::DataBaseWorker(QString databaseFile)
 {
     db = QSqlDatabase::addDatabase("QSQLITE");

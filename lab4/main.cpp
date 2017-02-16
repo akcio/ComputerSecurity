@@ -9,10 +9,10 @@ int main(int argc, char *argv[])
 {
     SuperFileRemover sfr(time(NULL));
     string fileName;
-    cout << "Введи имя файла: ";
+    cout << "FileName: ";
     cin >> fileName;
     QString QfileName = QString::fromStdString(fileName);
     sfr.RemoveFile(QfileName);
-    cout << "Удалено" << endl;
+    cout << "Delete" << endl;
     return 0;
 }

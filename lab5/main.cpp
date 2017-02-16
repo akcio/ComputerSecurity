@@ -16,6 +16,11 @@ void PrintAllDataBase(DataBaseWorker db)
     }
 }
 
+bool CheckLoad()
+{
+    return true;
+}
+
 int main(int argc, char *argv[])
 {
     string fileName;
@@ -23,7 +28,7 @@ int main(int argc, char *argv[])
     cin >> fileName;
     QString QfileName = QString::fromStdString(fileName);
     DataBaseWorker db(QfileName);
-    PrintAllDataBase(db);
+    //PrintAllDataBase(db);
     while (true)
     {
         cout << "Input filename to check: ";

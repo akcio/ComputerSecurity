@@ -8,7 +8,7 @@ public:
     Saver();
     bool Save(QString fileName, QString password);
     bool Save(QString fileName, QList<QString> passwords);
-    QList<QString> Load(QString filename, unsigned int key);
+    QList<QString> Load(QString filename);
 private:
     QString Encode(QString toEncode, unsigned int key);
     QString Decode(QString toDecode, unsigned int key);

@@ -8,16 +8,16 @@
 
 using namespace std;
 
-int main(int argc, char *argv[])
+void GeneratePassWord()
 {
     int passwordLen = 10;
     int passwordCnt = 0;
     string fileName = "";
-    cout << "Длина пароля: ";
+    cout << "Password length: ";
     cin >> passwordLen;
-    cout << "Количество паролей: ";
+    cout << "Passwprd counts: ";
     cin >> passwordCnt;
-    cout << "Имя файла для сохранения: ";
+    cout << "SaveFile name: ";
 
     cin >> fileName;
     QString QfileName = QString::fromStdString(fileName);
@@ -30,6 +30,34 @@ int main(int argc, char *argv[])
     }
     Saver sv;
     sv.Save(QfileName, passwords);
-    cout << endl <<"!!! Выполнено !!!" << endl;
+    cout << endl <<"!!! Success !!!" << endl;
+
+}
+
+void LoadPasswords(QString QfileName)
+{
+    Saver sv;
+    QList<QString> deshifr = sv.Load(QfileName);
+    foreach (auto pass, deshifr)
+    {
+        cout << pass.toStdString() << endl;
+    }
+
+}
+
+int main(int argc, char *argv[])
+{
+    char c;
+    string filename;
+    cout << "For generate input g. For load l filename: ";
+    cin >> c;
+    if (c == 'g')
+        GeneratePassWord();
+    if (c == 'l')
+    {
+        cin >> filename;
+        LoadPasswords(QString::fromStdString(filename));
+    }
+
     return 0;
 }
