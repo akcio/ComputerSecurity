@@ -44,6 +44,22 @@ void DataBaseWorker::AddToDataBase(QString fileName, QByteArray hash)
     query.exec("INSERT INTO FileData (fileName, hash) VALUES('" + fileName + "', '" + hash.toHex() + "')");
 }
 
+QList<QString> DataBaseWorker::GetAllData()
+{
+    QList<QString> result;
+    QSqlQuery query;
+    QString qu = "SELECT * FROM FileData";
+    query.exec(qu);
+    while (query.next())
+    {
+        QString fileName = query.value(0).toString();
+        QString hash = query.value(1).toString();
+        result.append(fileName + " | " + hash);
+
+    }
+    return result;
+}
+
 DataBaseWorker::~DataBaseWorker()
 {
     db.close();

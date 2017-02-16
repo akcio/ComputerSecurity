@@ -14,6 +14,7 @@ public:
     enum DatabaseAnswer { HAS_ROW, ROW_BROKEN, NO_ROW };
     unsigned short CheckFileAndHash(QString fileName, QByteArray hash);
     void AddToDataBase(QString fileName, QByteArray hash);
+    QList<QString> DataBaseWorker::GetAllData();
 private:
     QSqlDatabase db;
 };

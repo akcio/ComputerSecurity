@@ -7,16 +7,26 @@
 
 using namespace std;
 
+void PrintAllDataBase(DataBaseWorker db)
+{
+    QList<QString> allStrings = db.GetAllData();
+    foreach (auto row, allStrings)
+    {
+        cout << row.toStdString() << endl;
+    }
+}
+
 int main(int argc, char *argv[])
 {
     string fileName;
-    cout << "Введи имя файла базы данных: ";
+    cout << "Input database filename: ";
     cin >> fileName;
     QString QfileName = QString::fromStdString(fileName);
     DataBaseWorker db(QfileName);
+    PrintAllDataBase(db);
     while (true)
     {
-        cout << "Введи имя файла для проверки: ";
+        cout << "Input filename to check: ";
         cin >> fileName;
         QfileName = QString::fromStdString(fileName);
         QFile* file = new QFile(QfileName);
@@ -29,16 +39,16 @@ int main(int argc, char *argv[])
             if (result == 0)
             {
                 db.AddToDataBase(QfileName, resultHash);
-                cout << "Файл не найден. Добавлен в базу" << endl;
+                cout << "File not found. Added to database" << endl;
             }
             if (result == 2)
-                cout << "Хэш не совпал" << endl;
+                cout << "Hash doesn't match" << endl;
             if (result == 1)
-                cout << "Файл ок" << endl;
+                cout << "File ok!" << endl;
         }
         else
         {
-            cout << "Не удалось открыть файл" << endl;
+            cout << "Not found | or open eroor with file" << endl;
         }
     }
 
