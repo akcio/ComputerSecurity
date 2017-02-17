@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
     cryptograph = Cryptograph(time(NULL));
     while (true)
     {
-        cout << "OneAlphabet - a, Multi - m, OneNotepad - n";
+        cout << "OneAlphabet - a, Multi - m, OneNotepad - n: ";
         char c;
         cin >> c;
         if (c == 'a')
