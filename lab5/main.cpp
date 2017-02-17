@@ -17,24 +17,22 @@ void PrintAllDataBase(DataBaseWorker db)
     }
 }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 0b2d7a9... Переведен интерфейс на английский. Добавлен метод вывода всей базы
 int main(int argc, char *argv[])
 {
-    Checker checker(argv[0]);
-    cout << "Check: " << checker.CheckBinary() << endl;
+    QCoreApplication a(argc, argv);
+    Checker checker;
+    if (!checker.CheckBinary())
+    {
+        cout << "Хэшсумма не совпала" << endl;
+        return 0;
+    }
     string fileName;
     cout << "Input database filename: ";
     cin >> fileName;
     QString QfileName = QString::fromStdString(fileName);
     DataBaseWorker db(QfileName);
-<<<<<<< HEAD
     //PrintAllDataBase(db);
-=======
-    PrintAllDataBase(db);
->>>>>>> 0b2d7a9... Переведен интерфейс на английский. Добавлен метод вывода всей базы
     while (true)
     {
         cout << "Input filename to check: ";

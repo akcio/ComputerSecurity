@@ -5,18 +5,20 @@
 #include <QTextStream>
 #include <QCryptographicHash>
 #include <string>
+#include <QFileInfo>
 
 class Checker
 {
 public:
-    Checker(std::string path);
+    Checker();
     bool HasHashFile();
     void CreateHashFile();
     QString GetHash();
     QString LoadHash();
     bool CheckBinary();
 private:
-    std::string Path;
+    QString Path;
+    QString Hash;
 };
 
 #endif // CHEKER_H

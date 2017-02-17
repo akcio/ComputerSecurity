@@ -1,28 +1,32 @@
 #include "checker.h"
 
-Checker::Checker(std::string path)
+Checker::Checker()
 {
-    Path = path;
+    Path = (QFileInfo(QCoreApplication::applicationFilePath() ).fileName());
+    Hash = "";
 }
 
 bool Checker::HasHashFile()
 {
     QFile file(".hash");
+    bool a = file.exists();
     return file.exists();
 }
 
 QString Checker::GetHash()
 {
-    QString hashText = "cdba";
-    //QCoreApplication qCore(0, []);
-    QFile* file = new QFile(QString::fromStdString(Path));
+    QString hashText;
+    if (Hash != "")
+        return Hash;
+    QFile* file = new QFile(Path);
     if(file->open(QIODevice::ReadOnly))
     {
         QCryptographicHash* hash;
-        QByteArray resultHash = hash->hash(file->readAll(),QCryptographicHash::Sha512);
+        QByteArray resultHash = hash->hash(file->readAll(),QCryptographicHash::Md5);
         file->close();
         hashText += QString::fromStdString(resultHash.toHex().toStdString());
     }
+    Hash = hashText;
     return hashText;
 }
 
@@ -33,7 +37,7 @@ void Checker::CreateHashFile()
             return;
     QTextStream out(&file);
     out.setCodec("UTF-8");
-    out << GetHash() << endl;
+    out << GetHash();
 
     file.close();
 }
@@ -66,7 +70,9 @@ bool Checker::CheckBinary()
 {
     if (HasHashFile())
     {
-        if (LoadHash() == GetHash())
+        QString loadedHash = LoadHash();
+        QString realHash = GetHash();
+        if (realHash == loadedHash)
             return true;
     }
     else
