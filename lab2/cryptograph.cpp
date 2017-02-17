@@ -14,9 +14,9 @@ QString Cryptograph::EncodeOneAlphabet(QString toEncode, int key)
     QString encoded = "";
     for (int i=0; i<toEncode.count(); i++)
     {
-        int newChar = ((toEncode.at(i).toLatin1()) + key) % 256;
-        /*if (newChar == 0)
-            newChar = 255;*/
+        int newChar = ((toEncode.at(i).unicode()) + key) % 256;
+        if (newChar == 0)
+            newChar = 256;
         encoded += (char)newChar;
     }
     return encoded;
@@ -27,9 +27,9 @@ QString Cryptograph::DecodeOneAlphabet(QString toDecode, int key)
     QString decoded = "";
     for (int i=0; i<toDecode.count(); i++)
     {
-        int newChar = (toDecode.at(i).toLatin1() - key) % 256;
-        /*if (newChar == 0)
-            newChar = 255;*/
+        int newChar = (toDecode.at(i).unicode() - key) % 256;
+        if (newChar == 0)
+            newChar = 256;
         decoded += (char)newChar;
     }
     return decoded;
@@ -41,8 +41,8 @@ QString Cryptograph::EncodeMultiAlpabet(QString toEncode, QString key)
     for (int i=0; i<toEncode.count(); i++)
     {
         ushort newChar = ((toEncode.at(i).unicode()) + key.at(i % key.count()).unicode());
-        /*if (newChar == 0)
-            newChar = 255;*/
+        if (newChar == 0)
+            newChar = 255;
         encoded += (QChar)newChar;
     }
     return encoded;
@@ -54,9 +54,8 @@ QString Cryptograph::DecodeMultiAlpabet(QString toDecode, QString key)
     for (int i=0; i<toDecode.count(); i++)
     {
         ushort newChar = ((toDecode.at(i).unicode()) - key.at(i % key.count()).unicode());
-        /*if (newChar == 0)
+        if (newChar == 0)
             newChar = 255;
-            */
         decoded += (QChar)newChar;
     }
     return decoded;
@@ -105,11 +104,13 @@ QString Cryptograph::LoadFromFileUnicoded(QString fileName)
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
             return QString::fromStdString("");
     QTextStream in(&file);
-    QString fileText = "";
+    QString fileText;
     while (!in.atEnd())
     {
         ushort fileChar;
         in >> fileChar;
+        if (fileChar == 0)
+            break;
         fileText += (QChar)fileChar;
         //fileText += in.readLine();
     }
@@ -123,6 +124,7 @@ void Cryptograph::SaveToFile(QString fileName, QString text)
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
             return;
     QTextStream out(&file);
+    out.setCodec("UTF-8");
 
     out << text << endl;
 
@@ -135,11 +137,20 @@ QString Cryptograph::LoadFromFile(QString fileName)
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
             return QString::fromStdString("");
     QTextStream in(&file);
+    in.setCodec("UTF-8");
     QString fileText = "";
+
     while (!in.atEnd())
     {
-        fileText += in.readLine();
+        QChar fileChar;
+        in >> fileChar;
+        if (fileChar.unicode() == 0)
+            break;
+        fileText += (QChar)fileChar;
+        //fileText += in.readLine();
     }
+    //fileText = in.readAll();
+
     file.close();
     return fileText;
 }
