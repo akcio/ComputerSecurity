@@ -41,8 +41,8 @@ QString Cryptograph::EncodeMultiAlpabet(QString toEncode, QString key)
     for (int i=0; i<toEncode.count(); i++)
     {
         ushort newChar = ((toEncode.at(i).unicode()) + key.at(i % key.count()).unicode());
-        /*if (newChar == 0)
-            newChar = 255;*/
+        if (newChar == 0)
+            newChar = 255;
         encoded += (QChar)newChar;
     }
     return encoded;
@@ -54,9 +54,8 @@ QString Cryptograph::DecodeMultiAlpabet(QString toDecode, QString key)
     for (int i=0; i<toDecode.count(); i++)
     {
         ushort newChar = ((toDecode.at(i).unicode()) - key.at(i % key.count()).unicode());
-        /*if (newChar == 0)
+        if (newChar == 0)
             newChar = 255;
-            */
         decoded += (QChar)newChar;
     }
     return decoded;

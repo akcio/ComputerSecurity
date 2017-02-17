@@ -35,7 +35,6 @@ void MultiAlphabet()
         output = cryptograph.DecodeMultiAlpabet(input, QString::fromStdString(key));
     }
     cout << "Success: " << output.toStdString() << endl;
-
 }
 
 void SaveToFileIfNeed(QString text)
@@ -95,36 +94,32 @@ void OneAlphabet()
 
 void OneNotePad()
 {
-    string text;
+    string text, keyFile;
+    QString key;
     QString output="";
     char doings;
     cout << "decode - d, encode - e: ";
     cin >> doings;
     if (doings == 'e')
     {
-        QString key;
         cout << "String: ";
         cin >> text;
-        key = cryptograph.GenerateKey(text.length());
+        key = cryptograph.GenerateKey(text.length(), time(NULL));
         output = cryptograph.EncodeMultiAlpabet(QString::fromStdString(text), key);
+        cryptograph.SaveToFile(QString::fromStdString("key"), key);
         cout << "Input fileName to save: ";
         cin >> text;
         cryptograph.SaveToFileUnicoded(QString::fromStdString(text), output);
-        cryptograph.SaveToFile(QString::fromStdString("key"), key);
-        cout << "Key saved to key" << endl;
     }
     if (doings == 'd')
     {
-        string key;
         cout << "Input fileName to load: ";
         cin >> text;
-        cout << "Input key file to load: ";
-        cin >> key;
+        key = cryptograph.LoadFromFile(QString::fromStdString("key"));
         QString input = cryptograph.LoadFromFileUnicoded(QString::fromStdString(text));
-        output = cryptograph.DecodeMultiAlpabet(input, QString::fromStdString(key));
+        output = cryptograph.DecodeMultiAlpabet(input, key);
     }
     cout << "Success: " << output.toStdString() << endl;
-
 }
 
 int main(int argc, char *argv[])
