@@ -4,6 +4,7 @@
 #include <databaseworker.h>
 #include <iostream>
 #include <string>
+#include <checker.h>
 
 using namespace std;
 
@@ -16,13 +17,11 @@ void PrintAllDataBase(DataBaseWorker db)
     }
 }
 
-bool CheckLoad()
-{
-    return true;
-}
 
 int main(int argc, char *argv[])
 {
+    Checker checker(argv[0]);
+    cout << "Check: " << checker.CheckBinary() << endl;
     string fileName;
     cout << "Input database filename: ";
     cin >> fileName;
