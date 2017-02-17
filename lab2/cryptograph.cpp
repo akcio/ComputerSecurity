@@ -126,7 +126,7 @@ void Cryptograph::SaveToFile(QString fileName, QString text)
     QTextStream out(&file);
     out.setCodec("UTF-8");
 
-    out << text << endl;
+    out << text;
 
     file.close();
 }

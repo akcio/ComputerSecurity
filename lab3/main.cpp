@@ -54,7 +54,7 @@ void Cardano()
         cout << "String: ";
         string text;
         cin >> text;
-        encoded = NC.EncodeCardano(QString::fromStdString(text)) << endl;
+        encoded = NC.EncodeCardano(QString::fromStdString(text));
         cout << encoded.toStdString() << endl;
         cout << "Input filename: ";
         cin >> fileName;
