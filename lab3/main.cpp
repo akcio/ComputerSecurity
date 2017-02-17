@@ -75,12 +75,45 @@ void Cardano()
     }
 }
 
+void MineMethod()
+{
+    char c;
+    cout << "e to encode. d to decode: ";
+    cin >> c;
+    NewCryptograph NC;
+    QList<int> key;
+    key.append(4);
+    key.append(2);
+    key.append(1);
+    key.append(3);
+    string text;
+    if (c == 'e')
+    {
+        cout << "Input string: ";
+        cin >> text;
+        QString encoded = NC.EncodePermutation(NC.EncodeCardano(QString::fromStdString(text)), key);
+        cout << encoded.toStdString();
+        cout << "Filename to save: ";
+        cin >> text;
+        NC.SaveToFile(QString::fromStdString(text), encoded);
+    }
+    if (c == 'd')
+    {
+        cout << "FileName: ";
+        cin >> text;
+        QString encoded = NC.LoadFromFile(QString::fromStdString(text));
+        QString decoded = NC.DecodeCardano(NC.DecodePermutation(encoded, key));
+        cout << decoded.toStdString();
+    }
+}
+
 int main(int argc, char *argv[])
 {
     while (true)
     {
         //Permutation();
         //Cardano();
+        MineMethod();
     }
     return 0;
 }
