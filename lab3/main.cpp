@@ -54,7 +54,7 @@ void Cardano()
         cout << "String: ";
         string text;
         cin >> text;
-        encoded = NC.EncodeCardano(QString::fromStdString(text));
+        encoded = NC.EncodeCardano(QString::fromStdString(text)) << endl;
         cout << encoded.toStdString() << endl;
         cout << "Input filename: ";
         cin >> fileName;
@@ -92,7 +92,7 @@ void MineMethod()
         cout << "Input string: ";
         cin >> text;
         QString encoded = NC.EncodePermutation(NC.EncodeCardano(QString::fromStdString(text)), key);
-        cout << encoded.toStdString();
+        cout << encoded.toStdString() << endl;
         cout << "Filename to save: ";
         cin >> text;
         NC.SaveToFile(QString::fromStdString(text), encoded);
@@ -103,17 +103,25 @@ void MineMethod()
         cin >> text;
         QString encoded = NC.LoadFromFile(QString::fromStdString(text));
         QString decoded = NC.DecodeCardano(NC.DecodePermutation(encoded, key));
-        cout << decoded.toStdString();
+        cout << decoded.toStdString() << endl;
     }
 }
 
 int main(int argc, char *argv[])
 {
+    char c;
     while (true)
     {
-        //Permutation();
-        //Cardano();
-        MineMethod();
+        cout << "Permutation - p, Cardano - c, other - o: ";
+        cin >> c;
+        if (c == 'p')
+            Permutation();
+        if (c == 'c')
+            Cardano();
+        if (c == 'o')
+            MineMethod();
+        if (c == 'q')
+            break;
     }
     return 0;
 }
