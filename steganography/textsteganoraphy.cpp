@@ -5,18 +5,17 @@ TextSteganoraphy::TextSteganoraphy(QString fileName)
     FileName = fileName;
 }
 
-qint32 TextSteganoraphy::PrepareFile()
+void TextSteganoraphy::PrepareFile()
 {
     QFile inFile(FileName);
     QFile outFile("tmp.txt");
     if (!inFile.open(QIODevice::ReadOnly | QIODevice::Text))
-        return 0;
+        return;
     if (!outFile.open(QIODevice::WriteOnly | QIODevice::Text))
-        return 0;
+        return;
     QTextStream inStream(&inFile);
     QTextStream outStream(&outFile);
     QChar lastSymbol, currentSymbol;
-    qint32 freePosCount = 1;
     inStream >> lastSymbol;
     outStream << lastSymbol;
     while(!inStream.atEnd())
@@ -27,14 +26,32 @@ qint32 TextSteganoraphy::PrepareFile()
         if (lastSymbol == ' ' && currentSymbol == ' ')
             continue;
         lastSymbol = currentSymbol;
-        freePosCount++;
         outStream << lastSymbol;
     }
     inFile.close();
     outFile.close();
     inFile.remove();
     outFile.rename(FileName);
-    return freePosCount;
+}
+
+int TextSteganoraphy::GetAvailableSymbolsCount()
+{
+    QFile inFile(FileName);
+    if (!inFile.open(QIODevice::ReadOnly | QIODevice::Text))
+        return 0;
+    QTextStream inStream(&inFile);
+    QChar currentSymbol;
+    int availabaleSymvbols = 0;
+    while(!inStream.atEnd())
+    {
+        inStream >> currentSymbol;
+        if (currentSymbol.unicode() == 0)
+            continue;
+        if (currentSymbol == ' ')
+            availabaleSymvbols++;
+    }
+    inFile.close();
+    return availabaleSymvbols / 8;
 }
 
 QList<bool> TextSteganoraphy::StringToBits(QString text)
@@ -126,7 +143,7 @@ QList<bool> TextSteganoraphy::GetHiddenBits()
     return bitList;
 }
 
-QByteArray TextSteganoraphy::ConvertFromBitsToBytes(QList<bool> bitList)
+QByteArray TextSteganoraphy::BitsToBytes(QList<bool> bitList)
 {
     QByteArray decodeMask;
     decodeMask.append(0x01);
@@ -156,6 +173,6 @@ QByteArray TextSteganoraphy::ConvertFromBitsToBytes(QList<bool> bitList)
 
 QString TextSteganoraphy::GetHiddenText()
 {
-    QByteArray stringByted = ConvertFromBitsToBytes(GetHiddenBits());
+    QByteArray stringByted = BitsToBytes(GetHiddenBits());
     return stringByted;
 }

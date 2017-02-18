@@ -8,14 +8,16 @@ class TextSteganoraphy
 {
 public:
     TextSteganoraphy(QString fileName);
-    qint32 PrepareFile();
+    void PrepareFile();
     void HideText(QString text);
-    static QList<bool> StringToBits(QString text);
     QString GetHiddenText();
-    QList<bool> GetHiddenBits();
-    QByteArray ConvertFromBitsToBytes(QList<bool> bitList);
+    int GetAvailableSymbolsCount();
+    static QByteArray BitsToBytes(QList<bool> bitList);
+    static QList<bool> StringToBits(QString text);
 private:
     QString FileName;
+    QList<bool> GetHiddenBits();
+
 };
 
 #endif // TEXTSTEGANORAPHY_H
