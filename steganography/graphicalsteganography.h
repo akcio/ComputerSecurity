@@ -29,6 +29,8 @@ public:
     static std::string ParseError(Problems problem);
 
 
+    QByteArray IntToQByteArray(qint32 myInt);
+    qint32 QByteArrayToInt(QByteArray bytes);
 };
 
 #endif // GRAPHICALSTEGANOGRAPHY_H

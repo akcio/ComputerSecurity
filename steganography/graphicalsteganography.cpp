@@ -11,9 +11,48 @@ QList<bool> GraphicalSteganography::GetBitsFromBinary(QString fileName)
     QDataStream inputStream(&binaryFile);
     if (!binaryFile.open(QIODevice::ReadOnly))
             return QList<bool>();
-    QByteArray bytes = binaryFile.readAll();
+    QByteArray bytes;// = binaryFile.readAll();
+    bytes.insert(4, binaryFile.readAll());
+    qint32 length = bytes.count() - 4;
+    QByteArray lengthByted = IntToQByteArray(length);
+    for (int i=0; i<4; i++)
+        bytes[i] = lengthByted[i];
     binaryFile.close();
     return QByteArrayToListBits(bytes);
+}
+
+QByteArray GraphicalSteganography::IntToQByteArray(qint32 myInt)
+{
+    qint8 first = (myInt  & 0x000000FF) >> 0;
+    qint8 second = (myInt & 0x0000FF00) >> 8;
+    qint8 third = (myInt  & 0x00FF0000) >> 16;
+    qint8 fourth = (myInt & 0xFF000000) >> 24;
+    QByteArray bytes;
+    bytes.append(first);
+    bytes.append(second);
+    bytes.append(third);
+    bytes.append(fourth);
+
+    qint32 parsed = 0;
+
+    parsed += first & 0xFF;
+    parsed += (second << 8) & 0xFF00;
+    parsed += (third << 16) & 0xFF0000;
+    parsed += (fourth << 24) & 0xFF000000;
+
+    bool super = parsed == myInt;
+    return bytes;
+
+}
+
+qint32 GraphicalSteganography::QByteArrayToInt(QByteArray bytes)
+{
+    qint32 parsed = 0;
+    parsed += bytes[0] & 0xFF;
+    parsed += (bytes[1] << 8) & 0xFF00;
+    parsed += (bytes[2] << 16) & 0xFF0000;
+    parsed += (bytes[3] << 24) & 0xFF000000;
+    return parsed;
 }
 
 QList<bool> GraphicalSteganography::QByteArrayToListBits(QByteArray bytes)
@@ -165,12 +204,18 @@ Problems GraphicalSteganography::Show(QString imageName, QString outputFileName)
 
         }
     QByteArray binaryFileData = ListBitsToQByteArray(binaryBits);
+    QByteArray lengthByted;
+    for (int i=0; i<4; i++)
+        lengthByted.append(binaryFileData[i]);
+    qint32 length = QByteArrayToInt(lengthByted);
+    QByteArray dataToWrite = binaryFileData.mid(4, length);
     //binaryFileData.insert(0, );
     QFile outPutFile(outputFileName);
     if (!outPutFile.open(QIODevice::WriteOnly))
             return Problems::NO_BINARY;
     QDataStream outputStream(&outPutFile);
-    outputStream.writeRawData(binaryFileData, binaryFileData.length());
+
+    outputStream.writeRawData(dataToWrite, length);
     outPutFile.close();
 
     return Problems::SUCCESS;
