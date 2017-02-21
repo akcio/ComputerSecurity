@@ -29,16 +29,47 @@ void TextSteganoraphyHandler()
 
 }
 
+void GraphicalSteganographyHandle()
+{
+    string imageFileName, binaryFileName;
+    char doings;
+    cout << "Hide - h, Show - s: ";
+    cin >> doings;
+    cout << "Image filename: ";
+    cin >> imageFileName;
+    GraphicalSteganography gp;
+    Problems problem;
+    if (doings == 'h')
+    {
+        cout << "Input binary fileName: ";
+        cin >> binaryFileName;
+        problem = gp.Hide(QString::fromStdString(imageFileName), QString::fromStdString(binaryFileName));
+        cout << GraphicalSteganography::ParseError(problem);
+    }
+    if (doings == 's')
+    {
+        cout << "Input name for binary unpacked: ";
+        cin >> binaryFileName;
+        problem = gp.Show(QString::fromStdString(imageFileName), QString::fromStdString(binaryFileName));
+        cout << GraphicalSteganography::ParseError(problem);
+    }
+}
+
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    /*while (true)
-        TextSteganoraphyHandler();
-    */
-    GraphicalSteganography gp;
-    gp.Hide(QString::fromStdString("ntmp.bmp"), QString::fromStdString("lab3"));
-//    gp.Show(QString::fromStdString("tmp.bmp1"), QString::fromStdString("test2"));
-    gp.Show(QString::fromStdString("ntmp.bmp1"), QString::fromStdString("test2"));
-
+    while (true)
+    {
+        char doings;
+        cout << "Text mode - t, graphical - g: ";
+        cin >> doings;
+        if (doings == 't')
+            TextSteganoraphyHandler();
+        if (doings == 'g')
+            GraphicalSteganographyHandle();
+        if (doings == 'q')
+            break;
+    }
     return 0;
 }

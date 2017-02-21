@@ -3,9 +3,9 @@
 #include <QCoreApplication>
 #include <QFile>
 #include <QFileInfo>
-#include <QTextStream>
 #include <QDataStream>
 #include <QtGui/QBitmap>
+#include <string>
 
 enum Problems
 {
@@ -26,6 +26,7 @@ public:
     QList<bool> QByteArrayToListBits(QByteArray bytes);
     int EncryptBit(int color, bool bit);
     bool DecryptBit(int color);
+    static std::string ParseError(Problems problem);
 
 
 };

@@ -1,7 +1,5 @@
 #include "graphicalsteganography.h"
 
-#include <iostream>
-
 GraphicalSteganography::GraphicalSteganography()
 {
 
@@ -96,7 +94,8 @@ Problems GraphicalSteganography::Hide(QString imageName, QString binaryFileName)
 
             }
 
-    Image.save(imageName+"1", "BMP");
+    Image.save(imageName);
+    //Image.save(imageName+"1", "BMP");
     return Problems::SUCCESS;
 }
 
@@ -134,6 +133,19 @@ bool GraphicalSteganography::DecryptBit(int color)
 {
     bool decryptedBit = color & 0x01;
     return decryptedBit;
+}
+
+std::string GraphicalSteganography::ParseError(Problems problem)
+{
+    if (problem == Problems::SUCCESS)
+        return "Success\n";
+    if (problem == Problems::NO_BINARY)
+        return "Failed work with binary file\n";
+    if (problem == Problems::CANNT_LOAD_IMAGE)
+        return "Image can't load\n";
+    if (problem == Problems::IMAGE_TO_SHORT)
+        return "Image too short for this binary\n";
+    return "Other error\n";
 }
 
 Problems GraphicalSteganography::Show(QString imageName, QString outputFileName)
