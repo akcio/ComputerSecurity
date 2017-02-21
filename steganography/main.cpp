@@ -1,5 +1,6 @@
 #include <QCoreApplication>
 #include <textsteganoraphy.h>
+#include <graphicalsteganography.h>
 #include <iostream>
 
 using namespace std;
@@ -31,7 +32,13 @@ void TextSteganoraphyHandler()
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    while (true)
+    /*while (true)
         TextSteganoraphyHandler();
+    */
+    GraphicalSteganography gp;
+    gp.Hide(QString::fromStdString("ntmp.bmp"), QString::fromStdString("lab3"));
+//    gp.Show(QString::fromStdString("tmp.bmp1"), QString::fromStdString("test2"));
+    gp.Show(QString::fromStdString("ntmp.bmp1"), QString::fromStdString("test2"));
+
     return 0;
 }
