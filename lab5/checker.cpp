@@ -75,7 +75,7 @@ bool Checker::CheckBinary()
         if (realHash == loadedHash)
             return true;
     }
-    else
-        CreateHashFile();
+    //else
+    //    CreateHashFile();
     return false;
 }
