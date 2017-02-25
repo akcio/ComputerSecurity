@@ -36,6 +36,6 @@ int main(int argc, char *argv[])
     out.setCodec("UTF-8");
     out << resultHash;
     fileHash.close();
-
+    cout << "Success";
     return 0;
 }
