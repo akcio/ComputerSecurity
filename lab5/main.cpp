@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     Checker checker;
     if (!checker.CheckBinary())
     {
-        cout << "Хэшсумма не совпала" << endl;
+        cout << "Hash dismatch" << endl;
         return 0;
     }
     string fileName;
